@@ -1,5 +1,7 @@
 package com.example.demo.controller;// controller to handle HTTP requests to the application
+
 import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeDTO;
 import com.example.demo.service.EmployeeServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,53 +18,48 @@ public class MyController {
         return "Hello World";
     }
 
-    @Autowired // This means to get the employee service bean
-    //EmployeeService employeeService;
-    private EmployeeServiceInterface employeeServiceInterface;
+    @Autowired
+    EmployeeServiceInterface employeeServiceInterface;
 
-    // don't want data to be appended in URL instead, the data should be in body
-    // @requestbody because this annotation indicates that method should be bound to a body of a web request
-    // it helps to bind parameter
     //POST: http://localhost:8080/save  Put JSON info in body
     @PostMapping("/save") //map only POST requests
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
-        Employee saved;
+    public ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        EmployeeDTO saved;
         try {
-            saved = employeeServiceInterface.addEmployee(employee);
+
+            saved = employeeServiceInterface.addEmployee_DTO(employeeDTO);
         } catch (Exception e) {
-            return new ResponseEntity("Error!", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Error! "+e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        //Response entity is an object used to return to client to tell what happened inside service
-        //return new ResponseEntity<Employee>("Saved: "+saved, HttpStatus.CREATED);
         return new ResponseEntity("Saved: " + saved.getId(), HttpStatus.CREATED);
     }
 
     //GET: http://localhost:8080/all
     @GetMapping("/all")
-    public ResponseEntity<List<Employee>> getAllEmployees() {
-        List<Employee> list = employeeServiceInterface.getAllEmployees();
-        return new ResponseEntity<List<Employee>>(list, HttpStatus.OK);
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+        List<EmployeeDTO> list = employeeServiceInterface.getAllEmployees_DTO();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     // retrieve using ID
     //GET: http://localhost:8080/all/53
     @GetMapping("/all/{empid}")
-    public ResponseEntity<Employee> getEmpByID(@PathVariable("empid") Long empidL) {
-        Employee retrieved;
+    public ResponseEntity<EmployeeDTO> getEmpByID(@PathVariable("empid") Long empidL) {
+        EmployeeDTO retrieved;
         try {
-            retrieved = employeeServiceInterface.getEmpByID(empidL);
+            retrieved = employeeServiceInterface.getEmpByID_DTO(empidL);
         } catch (Exception e) {
             return new ResponseEntity("Error!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<Employee>(retrieved, HttpStatus.OK);
+        return new ResponseEntity<EmployeeDTO>(retrieved, HttpStatus.OK);
     }
 
     //delete using emp id
     //DELETE: http://localhost:8080/delete/53
     @DeleteMapping("/delete/{empid}")
-    public ResponseEntity<Void> deletEmpByID(@PathVariable("empid") Long empidL) {
+    public ResponseEntity<Void> deleteEmpByID(@PathVariable("empid") Long empidL) {
         try {
-            employeeServiceInterface.deleteEmployee(empidL);
+            employeeServiceInterface.deleteEmployee_DTO(empidL);
         } catch (Exception e) {
             return new ResponseEntity("Error!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -72,8 +69,8 @@ public class MyController {
     //update
     //PUT: http://localhost:8080/update
     @PutMapping("/update")
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
-        Employee saved = employeeServiceInterface.addEmployee(employee);
-        return new ResponseEntity("Updated: " + employee.getId(), HttpStatus.CREATED);
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        EmployeeDTO saved = employeeServiceInterface.addEmployee_DTO(employeeDTO);
+        return new ResponseEntity("Updated: " + saved.getId(), HttpStatus.CREATED);
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService implements EmployeeServiceInterface {
@@ -16,21 +18,24 @@ public class EmployeeService implements EmployeeServiceInterface {
     // CREATE: to create repository instance method call
     @Override
     public EmployeeDTO addEmployee_DTO(EmployeeDTO employeeDTO) {
-        
+        Employee employee = EmployeeMapper.mapToEmployee(employeeDTO);
         Employee savedEmp = crudRepo.save(employee);
-        return savedEmp;
+        EmployeeDTO savedEmpDTO = EmployeeMapper.mapToEmployeeDTO(savedEmp);
+        return savedEmpDTO;
     }
 
     // RETRIEVE
     @Override
     public List<EmployeeDTO> getAllEmployees_DTO() {
-        //find all returns a list
-        return crudRepo.findAll();
+        List<Employee> employees = crudRepo.findAll();
+        return employees.stream().map(EmployeeMapper::mapToEmployeeDTO).collect(Collectors.toList());
     }
 
     @Override
     public EmployeeDTO getEmpByID_DTO(Long empidL) {
-        return crudRepo.findById(empidL).get();
+        Optional<Employee> optionalEmployee = crudRepo.findById(empidL);
+        Employee employee = optionalEmployee.get();
+        return EmployeeMapper.mapToEmployeeDTO(employee);
     }
 
     // DELETE

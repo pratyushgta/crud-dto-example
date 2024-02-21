@@ -6,7 +6,7 @@ import com.example.demo.entity.EmployeeDTO;
 import java.util.List;
 
 public interface EmployeeServiceInterface{
-    EmployeeDTO addEmployee_DTO(Employee employee);
+    EmployeeDTO addEmployee_DTO(EmployeeDTO employeeDTO);
 
     List<EmployeeDTO> getAllEmployees_DTO();
 
