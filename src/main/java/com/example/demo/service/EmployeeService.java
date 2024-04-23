@@ -28,13 +28,13 @@ public class EmployeeService implements EmployeeServiceInterface {
     @Override
     public List<EmployeeDTO> getAllEmployees_DTO() {
         List<Employee> employees = crudRepo.findAll();
-        //container object which may or may not contain a non-null value.
-        // The Optional class is used to handle null values in a more robust way.
         return employees.stream().map(EmployeeMapper::mapToEmployeeDTO).collect(Collectors.toList());
     }
 
     @Override
     public EmployeeDTO getEmpByID_DTO(Long empidL) {
+        //container object which may or may not contain a non-null value.
+        // The Optional class is used to handle null values in a more robust way.
         Optional<Employee> optionalEmployee = crudRepo.findById(empidL);
         Employee employee = optionalEmployee.get();
         return EmployeeMapper.mapToEmployeeDTO(employee);
