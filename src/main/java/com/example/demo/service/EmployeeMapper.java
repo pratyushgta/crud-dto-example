@@ -1,3 +1,11 @@
+/**
+ * This class contains methods for mapping DTO to Entity and vice-versa
+ * MSA-E2
+ *
+ * @author Pratyush Kumar (github.com/pratyushgta)
+ */
+
+
 package com.example.demo.service;
 
 import com.example.demo.entity.Employee;

@@ -1,3 +1,10 @@
+/**
+ * This class contains methods for implementing controller using Response Entity
+ * MSA-E2
+ *
+ * @author Pratyush Kumar (github.com/pratyushgta)
+ */
+
 package com.example.demo.controller;// controller to handle HTTP requests to the application
 
 import com.example.demo.entity.Employee;

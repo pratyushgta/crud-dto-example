@@ -12,7 +12,9 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(nullable = false, unique = true)
     private String name;
+    private Double salary;
 
     public int getId() {
         return id;
@@ -38,6 +40,5 @@ public class Employee {
         this.salary = salary;
     }
 
-    private Double salary;
 
 }
